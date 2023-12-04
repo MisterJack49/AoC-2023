@@ -2,16 +2,15 @@ package days
 
 class Day1(alternate: Boolean = false) : Day(1, alternate) {
     override fun partOne(): Any {
-        return list
+        return inputList
             .map { "${it.findFirstDigit()}${it.findLastDigit()}" }
             .sumOf { it.toInt() }
     }
 
     override fun partTwo(): Any {
-        return list
+        return inputList
             .map {
                 val first: Char = it.findFirstDigitComplex()
-
                 val last: Char = it. findLastDigitComplex()
                 
                 "$first$last"
