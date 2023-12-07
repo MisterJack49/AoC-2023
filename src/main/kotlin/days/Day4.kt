@@ -17,17 +17,15 @@ class Day4 : Day(4) {
                 processCards()
                 cards
             }.sumOf { it.instances }
-
+    
 }
 
-val cardRegex = Regex("(Card\\s+(?<id>\\d+)):\\s+(?<winning>(\\d+(?>\\s*))+)\\|\\s+(?<drawn>(\\d+(?>\\s*))+)")
-
-data class Deck(val cards: List<Card>) {
+private data class Deck(val cards: List<Card>) {
     fun processCards() {
         cards.forEach { card ->
 
             if(card.matches().none()) return@forEach
-            
+
             val win = card.id + 1..card.id + card.matches().count()
 
             for (i in win) {
@@ -37,7 +35,7 @@ data class Deck(val cards: List<Card>) {
     }
 }
 
-data class Card(
+private data class Card(
     val id: Int,
     val winning: List<Int>,
     val drawn: List<Int>,
@@ -51,7 +49,9 @@ data class Card(
         drawn.intersect(winning.toSet())
 }
 
-fun List<String>.parseCards() =
+private val cardRegex = Regex("(Card\\s+(?<id>\\d+)):\\s+(?<winning>(\\d+(?>\\s*))+)\\|\\s+(?<drawn>(\\d+(?>\\s*))+)")
+
+private fun List<String>.parseCards() =
     map { string ->
         val match = cardRegex.find(string)!!
         Card(match.groups["id"]!!.value.toInt(),

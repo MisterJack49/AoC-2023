@@ -20,7 +20,7 @@ class Day2 : Day(2) {
 
 }
 
-data class Set(val colors: Map<Color, Int>) {
+private data class Set(val colors: Map<Color, Int>) {
     operator fun compareTo(other: Set): Int {
         if (colors == other.colors) return 0
         return if (colors.all { it.value <= other.colors[it.key]!! }) -1
@@ -28,24 +28,24 @@ data class Set(val colors: Map<Color, Int>) {
     }
 }
 
-data class Game(val id: Int, val sets: List<Set>) {
+private data class Game(val id: Int, val sets: List<Set>) {
     fun getMinimumSet() =
         Set(Color.values().associateWith { color -> sets.maxOf { it.colors[color]!! } })
 }
 
-enum class Color { Blue, Red, Green }
+private enum class Color { Blue, Red, Green }
 
-val colorReg = Regex("((?<blue>\\d+) blue)|((?<red>\\d+) red)|((?<green>\\d+) green)+")
+private val colorRegex = Regex("((?<blue>\\d+) blue)|((?<red>\\d+) red)|((?<green>\\d+) green)+")
 
-fun String.getColor(color: Color) =
-    colorReg.findAll(this)
+private fun String.getColor(color: Color) =
+    colorRegex.findAll(this)
         .map { result -> result.groups[color.name.lowercase()]?.value }
         .filterNotNull()
         .firstOrNull()
         ?.toInt() ?: 0
 
 
-fun List<String>.parseInput() =
+private fun List<String>.parseInput() =
     map {
         Game(
             it.split(":")[0].removePrefix("Game ").toInt(),

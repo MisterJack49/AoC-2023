@@ -17,10 +17,10 @@ class Day3 : Day(3) {
 
 }
 
-typealias Line = CharArray
-typealias GearSystem = Pair<Symbol, List<Number>>
+private typealias Line = CharArray
+private typealias GearSystem = Pair<Symbol, List<Number>>
 
-data class Number(
+private data class Number(
     val value: Int = 0,
     val line: Int = 0,
     val start: Int = 0,
@@ -41,9 +41,11 @@ data class Number(
     }
 }
 
-data class Symbol(val value: Char, val line: Int, val index: Int)
-data class GearPart(val number: Number, val gear: Symbol)
-data class Schematic(val data: Array<Line>) {
+private data class Symbol(val value: Char, val line: Int, val index: Int)
+
+private data class GearPart(val number: Number, val gear: Symbol)
+
+private data class Schematic(val data: Array<Line>) {
     private val width get() = data.first().size - 1
     private val height get() = data.size - 1
 
@@ -80,25 +82,25 @@ data class Schematic(val data: Array<Line>) {
         }
 }
 
-fun List<GearPart>.identifyGearSystems(): List<GearSystem> =
+private fun List<GearPart>.identifyGearSystems(): List<GearSystem> =
     groupBy({ it.gear }, { it.number })
         .filterValues { it.size == 2 }
         .toList()
 
-fun GearSystem.calculateRatio() =
+private fun GearSystem.calculateRatio() =
     second.reduce { acc, number -> Number(value = acc.value * number.value) }
 
 
-fun List<Char>.hasSymbols() =
+private fun List<Char>.hasSymbols() =
     filterNot { it.isDigit() }
         .filterNot { it == '.' }
         .any()
 
-fun List<Coordinates>.filterOutbound(x: Int, y: Int) =
+private fun List<Coordinates>.filterOutbound(x: Int, y: Int) =
     filterNot { it.x < 0 || it.y < 0 }
         .filterNot { it.x > x || it.y > y }
 
-fun Line.scanNumbers(): List<Number> {
+private fun Line.scanNumbers(): List<Number> {
 
     var acc = ""
     val numbers = mutableListOf<Number>()
@@ -128,7 +130,7 @@ fun Line.scanNumbers(): List<Number> {
     return numbers
 }
 
-fun List<String>.toSchematic(): Schematic =
+private fun List<String>.toSchematic(): Schematic =
     Schematic(
         map { it.toCharArray() }
             .toTypedArray()

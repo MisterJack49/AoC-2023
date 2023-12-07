@@ -21,7 +21,7 @@ class Day6 : Day(6) {
         }
 }
 
-data class Race(val time: Long, val distance: Long) {
+private data class Race(val time: Long, val distance: Long) {
 
     private fun getDistance(hold: Long): Long =
         (time - hold) * hold

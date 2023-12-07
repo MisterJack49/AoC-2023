@@ -1,7 +1,5 @@
 package days
 
-import kotlin.math.min
-
 class Day5 : Day(5) {
     override fun partOne(): Any {
         val almanac = inputString.split(Regex("\\r\\n\\r\\n"))
@@ -18,7 +16,7 @@ class Day5 : Day(5) {
                     }
                     .map {
                         Range(it[0].toLong(), it[1].toLong(), it[2].toLong())
-                    }.run { Mapper(Categorie.values()[idx], Categorie.values()[idx + 1], this) }
+                    }.run { Mapper(Category.values()[idx], Category.values()[idx + 1], this) }
             }
 
         return seeds.minOf { seed ->
@@ -45,7 +43,7 @@ class Day5 : Day(5) {
                     }
                     .map {
                         Range(it[0].toLong(), it[1].toLong(), it[2].toLong())
-                    }.run { Mapper(Categorie.values()[idx], Categorie.values()[idx + 1], this) }
+                    }.run { Mapper(Category.values()[idx], Category.values()[idx + 1], this) }
             }
 
         return seedRanges.minOf {
@@ -55,7 +53,7 @@ class Day5 : Day(5) {
     }
 }
 
-fun List<Mapper>.findMin(start: Long, length: Long): Long {
+private fun List<Mapper>.findMin(start: Long, length: Long): Long {
 
     if (length == 1L) return minOf(findLocation(start), findLocation(start + 1))
 
@@ -80,12 +78,12 @@ fun List<Mapper>.findMin(start: Long, length: Long): Long {
     return foundMin
 }
 
-fun List<Mapper>.findLocation(seed: Long) =
+private fun List<Mapper>.findLocation(seed: Long) =
     fold(seed) { acc, mapper ->
         mapper.convert(acc)
     }
 
-data class Range(val destination: Long, val source: Long, val size: Long) {
+private data class Range(val destination: Long, val source: Long, val size: Long) {
     fun isMapping(value: Long): Boolean =
         (source until source + size).contains(value)
 
@@ -94,12 +92,12 @@ data class Range(val destination: Long, val source: Long, val size: Long) {
         else destination + (value - source)
 }
 
-data class Mapper(val from: Categorie, val to: Categorie, val ranges: List<Range>) {
+private data class Mapper(val from: Category, val to: Category, val ranges: List<Range>) {
     fun convert(value: Long): Long =
         ranges.firstOrNull { it.isMapping(value) }?.convert(value) ?: value
 
 }
 
-enum class Categorie {
+private enum class Category {
     Seed, Soil, Fertilizer, Water, Light, Temperature, Humidity, Location
 }
